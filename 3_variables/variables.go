@@ -18,4 +18,10 @@ func main() {
 	// name = "golang"
 	// fmt.Println(name)
 
+	//
+	// // var price float32 = 50.5
+	// // var price = 50.5
+	// price := 50.5
+	// println(price)
+
 }
