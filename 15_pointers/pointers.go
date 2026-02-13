@@ -1,6 +1,33 @@
+// In C Lang: A pointer is a variable that stores the memory address of another variable.
+// Go also supports pointers, but it is safer and simpler.
 package main
 
 import "fmt"
+
+// func changeNum(num int) {
+// 	num = 5
+// 	fmt.Println("In changeNum", num)
+// }
+
+// func main() {
+// 	num := 1
+// 	changeNum(num)
+// 	fmt.Println("After changeNum in main", num)
+// }
+
+//
+//By Reference
+func changeNum(num *int) { // * -> Pointer
+	*num = 5
+	fmt.Println("In changeNum", *num)
+}
+
+func main() {
+	num := 1
+	changeNum(&num) //&->"Memory Address",
+	// fmt.Println("Memory Address", &num)
+	fmt.Println("After changeNum in main", num)
+}
 
 // by value
 // func changeNum(num int) {
@@ -9,17 +36,17 @@ import "fmt"
 // }
 
 // by reference
-func changeNum(num *int) {
-	*num = 5
-	fmt.Println("In changeNum", *num)
-}
+// func changeNum(num *int) {
+// 	*num = 5
+// 	fmt.Println("In changeNum", *num)
+// }
 
-func main() {
-	num := 1
-	// changeNum(num)
-	changeNum(&num)
+// func main() {
+// 	num := 1
+// 	// changeNum(num)
+// 	changeNum(&num)
 
-	// fmt.Println("Memory address", &num)
-	fmt.Println("After changeNum in main", num)
+// 	// fmt.Println("Memory address", &num)
+// 	fmt.Println("After changeNum in main", num)
 
-}
+// }
