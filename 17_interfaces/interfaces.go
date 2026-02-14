@@ -119,9 +119,6 @@ import "fmt"
 // }
 
 //
-package main
-
-import "fmt"
 
 type paymenter interface {
 	pay(amount float32)
