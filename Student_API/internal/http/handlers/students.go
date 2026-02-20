@@ -13,7 +13,7 @@ import (
 )
 import "fmt"
 
-func New() http.HandlerFunc {
+func New(storage storage.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		slog.Info("creating a student")
 		var student types.Student
@@ -34,9 +34,18 @@ func New() http.HandlerFunc {
 			response.WriteJson(w, http.StatusBadRequest, response.ValidationError(validateErrs))
 			return
 		}
-
-
-		response.WriteJson(w, http.StatusCreated, map[string]string{"success": "ok"})
+		lastId, err := storage.CreateStudent(
+			student.Name,
+			student.Email,
+			student.Age,
+		)
+		slog.Info("user created successfully", slog.String("userId", fmt.Sprint(lastId)))
+		if err != nil {
+			slog.Error("error getting user", slog.String("id", id))
+			response.WriteJson(w, http.StatusInternalServerError, response.GeneralError(err))
+			return
+		}
+		response.WriteJson(w, http.StatusCreated, map[string]int64{"id": lastId})
 	}
 }
 
@@ -66,13 +75,9 @@ func New() http.HandlerFunc {
 // 		err := json.NewDecoder(r.Body).Decode(&student)
 //
 
-// 		lastId, err := storage.CreateStudent(
-// 			student.Name,
-// 			student.Email,
-// 			student.Age,
-// 		)
 
-// 		slog.Info("user created successfully", slog.String("userId", fmt.Sprint(lastId)))
+
+// 		
 
 // 	
 
@@ -93,11 +98,6 @@ func New() http.HandlerFunc {
 
 // 		student, err := storage.GetStudentById(intId)
 
-// 		if err != nil {
-// 			slog.Error("error getting user", slog.String("id", id))
-// 			response.WriteJson(w, http.StatusInternalServerError, response.GeneralError(err))
-// 			return
-// 		}
 
 // 		response.WriteJson(w, http.StatusOK, student)
 // 	}
