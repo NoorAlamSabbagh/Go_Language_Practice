@@ -12,7 +12,7 @@ import (
 
 	"github.com/codersgyan/students-api/internal/config"
 	student "github.com/codersgyan/students-api/internal/http/handlers"
-	// config "github.com/codersgyan/students-api/internal"
+	config "github.com/codersgyan/students-api/internal"
 )
 
 // func main() {
@@ -118,6 +118,9 @@ func main() {
 	//setup server
 	router := http.NewServeMux()
 	router.HandleFunc("POST /api/students", student.New(storage))
+	router.HandleFunc("GET /api/students/{id}", student.GetById(storage))
+	router.HandleFunc("GET /api/students", student.GetList(storage))
+
 	// setup server
 	server := http.Server{
 		Addr:    cfg.Addr,
@@ -167,8 +170,6 @@ func main() {
 // }
 
 // router.HandleFunc("POST /api/students", student.New(storage))
-// 	router.HandleFunc("GET /api/students/{id}", student.GetById(storage))
-// 	router.HandleFunc("GET /api/students", student.GetList(storage))
 
 //
 // import (

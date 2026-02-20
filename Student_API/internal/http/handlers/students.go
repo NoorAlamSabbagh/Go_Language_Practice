@@ -49,6 +49,25 @@ func New(storage storage.Storage) http.HandlerFunc {
 	}
 }
 
+func GetById(storage storage.Storage) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := r.PathValue("id")
+		slog.Info("getting a student", slog.String("id", id))
+
+		intId, err := strconv.ParseInt(id, 10, 64)
+		if err != nil {
+			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
+			return
+		}
+
+		student, err := storage.GetStudentById(intId)
+
+
+		response.WriteJson(w, http.StatusOK, student)
+	}
+}
+
+
 // package student
 
 // import (
@@ -85,23 +104,6 @@ func New(storage storage.Storage) http.HandlerFunc {
 // 	}
 // }
 
-// func GetById(storage storage.Storage) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		id := r.PathValue("id")
-// 		slog.Info("getting a student", slog.String("id", id))
-
-// 		intId, err := strconv.ParseInt(id, 10, 64)
-// 		if err != nil {
-// 			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
-// 			return
-// 		}
-
-// 		student, err := storage.GetStudentById(intId)
-
-
-// 		response.WriteJson(w, http.StatusOK, student)
-// 	}
-// }
 
 // func GetList(storage storage.Storage) http.HandlerFunc {
 // 	return func(w http.ResponseWriter, r *http.Request) {
