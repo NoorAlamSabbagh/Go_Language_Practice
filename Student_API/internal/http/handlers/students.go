@@ -68,53 +68,16 @@ func GetById(storage storage.Storage) http.HandlerFunc {
 }
 
 
-// package student
+func GetList(storage storage.Storage) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		slog.Info("getting all students")
 
-// import (
-// 	"encoding/json"
-// 	"errors"
-// 	"fmt"
-// 	"io"
-// 	"log/slog"
-// 	"net/http"
-// 	"strconv"
+		students, err := storage.GetStudents()
+		if err != nil {
+			response.WriteJson(w, http.StatusInternalServerError, err)
+			return
+		}
 
-// 	"github.com/codersgyan/students-api/internal/storage"
-// 	"github.com/codersgyan/students-api/internal/types"
-// 	"github.com/codersgyan/students-api/internal/utils/response"
-// 
-// )
-
-// func New(storage storage.Storage) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-//
-
-// 		var student types.Student
-
-// 		err := json.NewDecoder(r.Body).Decode(&student)
-//
-
-
-
-// 		
-
-// 	
-
-// 		response.WriteJson(w, http.StatusCreated, map[string]int64{"id": lastId})
-// 	}
-// }
-
-
-// func GetList(storage storage.Storage) http.HandlerFunc {
-// 	return func(w http.ResponseWriter, r *http.Request) {
-// 		slog.Info("getting all students")
-
-// 		students, err := storage.GetStudents()
-// 		if err != nil {
-// 			response.WriteJson(w, http.StatusInternalServerError, err)
-// 			return
-// 		}
-
-// 		response.WriteJson(w, http.StatusOK, students)
-// 	}
-// }
+		response.WriteJson(w, http.StatusOK, students)
+	}
+}
